@@ -37,7 +37,6 @@ func PopulateReport(mods *[]Module, rep *[]ReportRow) {
 	
 }
 
-
 func RemoveDuplicates(r *[]ReportRow) []ReportRow {
  
  	sort.Slice(*r, func(i, j int) bool {
@@ -57,18 +56,3 @@ func RemoveDuplicates(r *[]ReportRow) []ReportRow {
  	return (*r)[:u+1]
 }
 
-
-
-
-func TestPopulate(rep *[]ReportRow) {
-
-	for _, r := range *rep {
-		fmt.Println("Testing:")
-		fmt.Println("r.Name is ", r.Name)
-		fmt.Println("r.Version is ", r.Version)
-		fmt.Println("r.Link is ", r.Link)
-		fmt.Println("r.License is ", r.License)
-		fmt.Println("r.Description is ", r.Description)
-		fmt.Println("")
-	}
-}
