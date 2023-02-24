@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//	"fmt"
 	"sort"
 	"strings"
 )	
@@ -19,13 +19,30 @@ func PopulateReport(mods *[]Module, rep *[]ReportRow) {
 			if m.Version == "" {
 				r.Version = "MAIN"
 			}
-			r.Link = strings.Join([]string{"https://", r.Name}, "")
-		} else { // Any non-main module should have a non-empty version (?)
-			replace := m.Replace
-			if replace != nil {
-				r.Name = replace.Path
-				r.Version = replace.Version
+			r.Url = strings.Join([]string{"https://", r.Name}, "")
+		}
+
+		// Any non-main module should have a non-empty version (?)
+		replace := m.Replace
+
+
+		// if there is a replace directive, but m.Replace.Path is a relative
+		// local filepath, and (probably in all such cases) there is no distinct
+		// local version for the replace module,
+		// we need to preserve the original information for the pkgsite scraping
+		// and possibly to facilitate post-generation report cleanup
+
+
+		if replace != nil {
+			
+			if r.Name != replace.Path {
+				r.Name = replace.Path + " < " + r.Name
 			}
+
+			if r.Version != replace.Version {		
+				r.Version = replace.Version + " < " + r.Version
+			}
+
 		}
 
 		ScrapeSecondaryData(&r)

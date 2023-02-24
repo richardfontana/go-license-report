@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"reflect"
+	"strings"
 )
 
 func WriteToCSV(r []ReportRow) {
@@ -17,6 +18,7 @@ func WriteToCSV(r []ReportRow) {
 	for i := range headings {
 		headings[i] = t.Field(i).Name
 	}
+	headings[2] = strings.ToUpper(headings[2])
 
 	repSize := len(r)
 	

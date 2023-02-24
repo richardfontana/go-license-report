@@ -21,17 +21,15 @@ func GetModulesUsed(m *[]Module) {
 		Module     *Module
 	}
 
-	cmd := exec.Command("go", "list", "-deps", "-json")
+	cmd := exec.Command("go", "list", "-e", "-deps", "-json", "...")
 	out, err := cmd.Output()
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Command finished with error: %v", err)
 	}
-
+	
 	// 'go list -json' provides a stream of JSON objects,
 	// rather than a single valid JSON object
-	
 	dec := json.NewDecoder(strings.NewReader(string(out)))
-
 	for {
 		var g GoListLit
 		
