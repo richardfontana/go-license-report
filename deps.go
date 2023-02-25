@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	//	"fmt"
 	"io"
 	"log"
 	"os/exec"
 	"strings"
 )
 
-func GetModulesUsed(m *[]Module) {
+func GetModulesUsed(fmap *map[FlatMod]bool) {
 
 	type GoListLit struct {
 		Dir        string
@@ -30,6 +31,8 @@ func GetModulesUsed(m *[]Module) {
 	// 'go list -json' provides a stream of JSON objects,
 	// rather than a single valid JSON object
 	dec := json.NewDecoder(strings.NewReader(string(out)))
+
+	
 	for {
 		var g GoListLit
 		
@@ -38,12 +41,13 @@ func GetModulesUsed(m *[]Module) {
 		} else if err != nil {
 			log.Fatal(err)
 		}
-		// We only report on non-std modules
-		if !g.Standard && g.Module != nil {
-			// We also ignore golang.org/x/ modules  
-			if !strings.HasPrefix(g.Module.Path, "golang.org/x/") {
-				*m = append(*m, *g.Module)
-			}
+		// We only report on non-std modules and ignore golang.org/x/ modules
+		if !g.Standard && g.Module != nil &&
+			!strings.HasPrefix(g.Module.Path, "golang.org/x/") {
+			f := ModuleToFlatMod(*g.Module)
+			(*fmap)[f] = true
 		}
 	}
 }
+
+
