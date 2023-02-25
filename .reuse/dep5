@@ -3,8 +3,6 @@ Upstream-Name: go-license-report
 Upstream-Contact: Richard Fontana <rfontana@redhat.com>
 Source: github.com/richardfontana/go-license-report
 
-# Sample paragraph, commented out:
-#
-# Files: src/*
-# Copyright: $YEAR $NAME <$CONTACT>
-# License: ...
+Files: *
+Copyright: Red Hat
+License: MIT
