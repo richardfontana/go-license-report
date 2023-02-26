@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//	"fmt"
 )
 
 type ReportRow struct {
@@ -39,20 +39,24 @@ func ModuleToFlatMod(module Module) FlatMod {
 	return f
 }
 
+var fmSlice = make([]FlatMod, 0)
+
+func FlatModToSlice(fmap *map[FlatMod]bool) {
+	for flatmod := range *fmap {
+		fmSlice = append(fmSlice, flatmod)
+	}
+}
+
+
 func main() {
-	//	var report []ReportRow
+	var report []ReportRow
 
 	fmap := make(map[FlatMod]bool)
 	
 	GetModulesUsed(&fmap)
 
-	for r := range fmap {	
-		fmt.Println(r)
-	}
-
-
+	FlatModToSlice(&fmap)
 	
-	//	PopulateReport(&mods, &report)
-	//	CacheResults(report)
-	//	WriteToCSV(report)
+	PopulateReport(&fmSlice, &report)
+	WriteToCSV(report)
 }	
